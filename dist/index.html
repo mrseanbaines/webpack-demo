@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <title>Caching</title>
+    <title>Getting Started</title>
+    <script>
+      var modernBrowser = 'fetch' in window && 'assign' in Object;
+
+      if (!modernBrowser) {
+        var scriptElement = document.createElement('script');
+
+        scriptElement.async = false;
+        scriptElement.src = '/polyfills.bundle.js';
+        document.head.appendChild(scriptElement);
+      }
+    </script>
   </head>
   <body>
-  <script type="text/javascript" src="runtime.81effc814b84e365c684.js"></script><script type="text/javascript" src="vendors.9e16999b9455d296d7e2.js"></script><script type="text/javascript" src="main.ede531e2b8287fbf8a3f.js"></script></body>
+    <script src="index.bundle.js"></script>
+  </body>
 </html>

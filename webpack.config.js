@@ -1,31 +1,30 @@
 const path = require('path');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
-  plugins: [
-    new CleanWebpackPlugin(['dist']),
-    new HtmlWebpackPlugin({
-      title: 'Caching',
-    }),
-    new webpack.HashedModuleIdsPlugin(),
-  ],
+  entry: {
+    polyfills: './src/polyfills.js',
+    index: './src/index.js',
+  },
   output: {
-    filename: '[name].[contenthash].js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  optimization: {
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
+  module: {
+    rules: [
+      {
+        test: require.resolve('index.js'),
+        use: 'imports-loader?this=>window',
       },
-    },
+      {
+        test: require.resolve('globals.js'),
+        use: 'exports-loader?file,parse=helpers.parse',
+      },
+    ],
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      join: ['lodash', 'join'],
+    }),
+  ],
 };
